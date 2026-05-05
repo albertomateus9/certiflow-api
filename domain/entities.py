@@ -25,8 +25,8 @@ class CertificateEntity:
 
     @staticmethod
     def generate_hash(student: StudentModel, event: AcademicEvent) -> str:
-        \"\"\"
+        """
         Gera a assinatura criptográfica baseada no aluno e no evento.
-        \"\"\"
-        payload = f\"{student.registration_code}-{event.id}\"
+        """
+        payload = f"{student.registration_code}-{event.id}"
         return hashlib.sha256(payload.encode('utf-8')).hexdigest()
