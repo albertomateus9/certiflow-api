@@ -1,0 +1,1 @@
+# Módulo interface_adapters
