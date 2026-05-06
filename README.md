@@ -1,39 +1,65 @@
 # CertiFlow API
 
-**CertiFlow API** é um motor criptográfico open-source projetado para geração e validação de certificados escolares em alta escala.
+Certificate generation and validation architecture for educational programs, with cryptographic integrity and asynchronous processing in mind.
 
-Este projeto baseia-se nos princípios de **Clean Architecture**, permitindo extrema facilidade de manutenção e troca de componentes (como banco de dados ou mensageria).
+## Overview
 
-## Segurança Criptográfica (SHA-256)
+CertiFlow API is an educational backend template for generating, signing, and validating school or training certificates at scale. It uses Clean Architecture to keep certificate rules independent from HTTP controllers, PDF rendering, queues, and storage choices.
 
-Para evitar fraudes, cada certificado gerado pelo sistema recebe uma assinatura criptográfica unívoca utilizando o algoritmo **SHA-256**.
-A assinatura é gerada através da combinação determinística dos dados do Aluno (ex: matrícula) e do Evento Acadêmico. 
+## Problem
 
-Essa chave pode ser codificada em um **QR Code** no PDF, permitindo que a instituição valide a integridade do certificado emitido de forma instantânea na plataforma, sem depender de carimbos físicos.
+Manual certificate workflows are slow, hard to audit, and vulnerable to fraud. A professional certificate service needs deterministic validation, batch processing, and a clear separation between business rules and infrastructure.
 
-## O Desafio (Hackathon)
+## Core Ideas
 
-Este repositório é fornecido como a infraestrutura "casca" do motor criptográfico. 
-Para completar o sistema no Hackathon, os alunos deverão resolver os seguintes desafios de engenharia na camada de **Application** e **Infrastructure**:
+- Generate a SHA-256 integrity hash from student and event data.
+- Encode validation data into a QR Code or public verification endpoint.
+- Process large certificate batches asynchronously through workers.
+- Keep rendering and queue systems replaceable.
 
-1. **Parser de CSV em Alta Performance:** O Estado fornece a lista de alunos aprovados em um arquivo `.csv`. Você deve construir a lógica para ler este arquivo, instanciar as entidades `StudentModel` e tratá-las.
-2. **Orquestração de Filas com Celery:** Gerar milhares de PDFs via Weasyprint consome muita CPU e memória, e faria a API HTTP travar. Você deve integrar o **Celery** (com Redis ou RabbitMQ) no caso de uso `GenerateBatchCertificatesUseCase` para despachar a renderização dos PDFs e envio de e-mails para *workers* assíncronos trabalhando em background.
+## Architecture
 
-## Estrutura do Projeto
+- `domain/`: student, event, and certificate entities.
+- `application/`: generation and validation use cases.
+- `interface_adapters/`: future FastAPI controllers and DTOs.
+- `infrastructure/`: future PDF rendering, queues, templates, and storage.
 
-*   **`domain/`**: Entidades e regras do negócio (`StudentModel`, lógica SHA-256).
-*   **`application/`**: Casos de uso de geração em lote e validação de integridade. (Aqui começa o desafio!)
-*   **`interface_adapters/`**: Controladores HTTP do FastAPI.
-*   **`infrastructure/`**: Renderização em PDF (Weasyprint), Filas (Celery) e templates HTML (Jinja2).
+## Stack
 
-## Como Instalar
+- Python 3.10+
+- FastAPI and Uvicorn
+- WeasyPrint and Jinja2 for PDF rendering
+- QRCode generation
+- Celery for asynchronous workloads
+
+## Getting Started
 
 ```bash
-git clone <url-do-seu-repositorio>
+git clone https://github.com/albertomateus9/certiflow-api.git
 cd certiflow-api
-python -m venv venv
-# Ative o ambiente (venv\Scripts\activate no Windows ou source venv/bin/activate no Linux/Mac)
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Boa sorte! Que seus workers processem os PDFs de forma veloz e resiliente!
+On Linux or macOS, activate the environment with:
+
+```bash
+source .venv/bin/activate
+```
+
+## Development Direction
+
+- Add CSV parsing for approved students.
+- Implement Celery tasks for PDF generation.
+- Expose certificate validation through FastAPI.
+- Add persistence for issued certificates and verification status.
+- Add tests for hash generation and validation use cases.
+
+## Professional Context
+
+This project connects educational technology, public-sector training workflows, software architecture, and security-minded documentation.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
