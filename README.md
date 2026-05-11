@@ -1,65 +1,26 @@
 # CertiFlow API
 
-Certificate generation and validation architecture for educational programs, with cryptographic integrity and asynchronous processing in mind.
+Conceito de API para geracao e validacao de certificados com integridade SHA-256 e processamento assincrono.
 
-## Overview
+## Visão Geral
 
-CertiFlow API is an educational backend template for generating, signing, and validating school or training certificates at scale. It uses Clean Architecture to keep certificate rules independent from HTTP controllers, PDF rendering, queues, and storage choices.
+CertiFlow API é um projeto de vitrine do portfólio técnico de Alberto Mateus P. da Gama. O objetivo é demonstrar maturidade profissional em redes, telecomunicações, automação, educação tecnológica e sistemas aplicados.
 
-## Problem
+## Contexto Profissional
 
-Manual certificate workflows are slow, hard to audit, and vulnerable to fraud. A professional certificate service needs deterministic validation, batch processing, and a clear separation between business rules and infrastructure.
+- Infraestrutura de redes, telecomunicações e operação técnica.
+- Documentação clara para leitura pública no GitHub.
+- Dados sintéticos ou escopo conceitual, sem exposição de clientes, alunos ou documentos internos.
+- Estrutura pensada para evolução incremental.
 
-## Core Ideas
+## Como Rodar
 
-- Generate a SHA-256 integrity hash from student and event data.
-- Encode validation data into a QR Code or public verification endpoint.
-- Process large certificate batches asynchronously through workers.
-- Keep rendering and queue systems replaceable.
+Consulte `requirements.txt` e os pacotes Python do repositório. O projeto é um template técnico e pode ser expandido para CLI, API ou laboratório.
 
-## Architecture
+## Política De Dados
 
-- `domain/`: student, event, and certificate entities.
-- `application/`: generation and validation use cases.
-- `interface_adapters/`: future FastAPI controllers and DTOs.
-- `infrastructure/`: future PDF rendering, queues, templates, and storage.
+Nenhum dado real de estudantes, clientes, credenciais, telefones, e-mails pessoais ou documentos internos é publicado neste repositório.
 
-## Stack
+## Licença
 
-- Python 3.10+
-- FastAPI and Uvicorn
-- WeasyPrint and Jinja2 for PDF rendering
-- QRCode generation
-- Celery for asynchronous workloads
-
-## Getting Started
-
-```bash
-git clone https://github.com/albertomateus9/certiflow-api.git
-cd certiflow-api
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-On Linux or macOS, activate the environment with:
-
-```bash
-source .venv/bin/activate
-```
-
-## Development Direction
-
-- Add CSV parsing for approved students.
-- Implement Celery tasks for PDF generation.
-- Expose certificate validation through FastAPI.
-- Add persistence for issued certificates and verification status.
-- Add tests for hash generation and validation use cases.
-
-## Professional Context
-
-This project connects educational technology, public-sector training workflows, software architecture, and security-minded documentation.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+MIT. Consulte [LICENSE](LICENSE).
